@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sahil Counder — Dev Portfolio</title>
+  <!-- React 18 UMD -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel standalone — transpiles JSX in-browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { background: #0A0E14; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+    /* pull hooks from the global React UMD object */
+    const { useState, useEffect, useRef, useCallback } = React;
+
+
+/* ──────────────────────────────────────────────────────────
+   SAHIL COUNDER — dev workspace portfolio
+   Theme: Ayu Dark · Font: JetBrains Mono
+   ────────────────────────────────────────────────────────── */
+
+const T = {
+  bg: "#0A0E14", panel: "#0D1117", raise: "#10141C", line: "#1C2433",
+  fg: "#BFBDB6", bright: "#E6E1CF", dim: "#5C6773", faint: "#3D4451",
+  orange: "#FFB454", yellow: "#E6B450", green: "#AAD94C", blue: "#59C2FF",
+  purple: "#D2A6FF", red: "#F07178", cyan: "#95E6CB",
+};
+
+/* ───────────── embedded resume (base64 docx) ───────────── */
+const RESUME_B64 = "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";
+const RESUME_FILENAME = "Sahil_Counder_Resume.docx";
+const downloadResume = () => {
+  const a = document.createElement("a");
+  a.href = "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64," + RESUME_B64;
+  a.download = RESUME_FILENAME;
+  a.click();
+};
+
+/* ───────────── boot sequence ───────────── */
+const BANNER = [
+  "  .   ____          _            __ _ _",
+  " /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\ \\ \\ \\",
+  "( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\",
+  " \\\\/  ___)| |_)| | | | | || (_| |  ) ) ) )",
+  "  '  |____| .__|_| |_|_| |_\\__, | / / / /",
+  " =========|_|==============|___/=/_/_/_/",
+];
+
+const BOOT_LINES = [
+  { t: "cmd", s: "$ java -jar sahil-counder.jar" },
+  { t: "banner" },
+  { t: "ver", s: " :: Sahil Counder ::                (v4.3.0-RELEASE)" },
+  { t: "gap" },
+  { t: "log", lvl: "INFO", s: "Starting PortfolioApplication using Java 21 on nagpur-dev-01" },
+  { t: "log", lvl: "INFO", s: "Loading 4+ years of production experience..." },
+  { t: "log", lvl: "INFO", s: "Registering modules: [pilog-mdm, mercury-gate, liberty-mutual]" },
+  { t: "log", lvl: "INFO", s: "Mounting side projects: reviewpilot, hireflow" },
+  { t: "log", lvl: "INFO", s: "Tomcat started on port(s): 8080 (http)" },
+  { t: "log", lvl: "OK", s: "Started PortfolioApplication in 1.247 seconds (process running for 4.3 yrs)" },
+];
+
+/* ───────────── career data (git log) ───────────── */
+const CAREER = [
+  {
+    hash: "a3f8e21", head: true, branch: "pilog/mdm-platform",
+    msg: "feat(mdm): Java Developer @ Pilog Group",
+    date: "Feb 2026 – Present", loc: "Hyderabad, IN",
+    scope: "Lean Data Governance & Master Data Management Platform",
+    color: T.blue,
+    diff: [
+      { k: "+", s: "Architect MDM modules — Java 21, Spring Boot, Spring Security — for Fortune 500 clients (manufacturing, oil & gas, utilities)" },
+      { k: "+", s: "REST APIs (JSON/Swagger) syncing master data with SAP, Oracle ERP & third-party systems" },
+      { k: "+", s: "Data quality & cleansing services → ~35% improvement in data accuracy post-rollout" },
+      { k: "~", s: "Tuned Oracle/PostgreSQL on millions of records → API response times down ~25%" },
+      { k: "+", s: "JUnit/Mockito at 80%+ coverage · CI/CD via Jenkins + Docker across global Agile teams" },
+    ],
+  },
+  {
+    hash: "7c2d94f", branch: "rajavi/mercury-gate",
+    msg: "feat(logistics): Software Developer @ Rajavi Technologies",
+    date: "Aug 2024 – Feb 2026", loc: "Pune, IN",
+    scope: "Mercury Gate — logistics workflow platform",
+    color: T.yellow,
+    diff: [
+      { k: "+", s: "Configurable workflow automation for order/shipment/billing → ~40% less manual effort" },
+      { k: "+", s: "Spring Boot + Hibernate microservices on Docker/K8s → ~50% faster deployment cycles" },
+      { k: "~", s: "Optimized 25+ MySQL queries (JDBC, Spring Data JPA) → ~22% faster under load" },
+      { k: "~", s: "JVM tuning on heaviest workflows → ~15% execution-time reduction" },
+      { k: "+", s: "JUnit/Mockito standards enforced → production defects down ~30% · 90%+ sprint delivery in 7-member team" },
+    ],
+  },
+  {
+    hash: "e91b0c4", branch: "cognizant/enterprise",
+    msg: "feat(insurance,health): Jr. Software Engineer @ Cognizant",
+    date: "Dec 2021 – May 2024", loc: "Pune, IN",
+    scope: "Liberty Mutual (insurance) · Hospital Management System",
+    color: T.purple,
+    diff: [
+      { k: "+", s: "Built 9+ Spring Boot/Hibernate microservices — policy mgmt, claims, patient records" },
+      { k: "~", s: "Code coverage raised 55% → 85%+ with JUnit/Mockito · post-release defects down ~30%" },
+      { k: "~", s: "MySQL/Oracle at 400K+ daily transactions → query latency down ~18% via indexing & schema tuning" },
+      { k: "+", s: "Maven + Jenkins build automation → delivery timelines trimmed ~25%" },
+      { k: "+", s: "10+ engineers, 3 time zones, zero missed sprint deadlines · won team innovation award 2023" },
+    ],
+  },
+  {
+    hash: "0f1d2ab", branch: "rtmnu/degree",
+    msg: "init: B.E. Computer Technology @ RTMNU Nagpur",
+    date: "2017 – 2021", loc: "Nagpur, IN",
+    scope: "CGPA 8.92 / 10",
+    color: T.green,
+    diff: [
+      { k: "+", s: "Core CS: DSA, OOP, DBMS, operating systems, computer networks" },
+      { k: "+", s: "Graduated with 8.92 CGPA — foundation for enterprise Java career" },
+    ],
+  },
+];
+
+/* ───────────── real project code ───────────── */
+const CODE_REVIEWSERVICE = `@Service
+@RequiredArgsConstructor
+@Slf4j
+public class ReviewService {
+
+    private final GitHubClient gitHubClient;
+    private final GeminiClient geminiClient;
+    private final DiffChunkerService diffChunker;
+
+    /**
+     * Async orchestrator — the webhook controller returns
+     * 200 OK in ~100ms; all slow work happens here, in a
+     * background thread, beating GitHub's 10s timeout.
+     */
+    @Async("reviewTaskExecutor")
+    public void reviewAsync(WebhookPayload payload) {
+        String owner = payload.getRepository().getOwner().getLogin();
+        String repo  = payload.getRepository().getName();
+        int prNumber = payload.getNumber();
+
+        log.info("Starting async review: {}/{}#{}", owner, repo, prNumber);
+
+        // 1 — fetch the raw unified diff
+        String rawDiff = gitHubClient.fetchDiff(owner, repo, prNumber);
+        if (rawDiff == null || rawDiff.isBlank()) {
+            log.warn("Empty diff — skipping review");
+            return;
+        }
+
+        // 2 — filter noise files, split oversized diffs
+        List<String> chunks = diffChunker.chunk(rawDiff);
+
+        // 3 — Gemini reviews each chunk (structured JSON out)
+        ReviewResult result = geminiClient.review(chunks);
+
+        // 4 — post structured feedback back onto the PR
+        gitHubClient.postComment(owner, repo, prNumber, result.toMarkdown());
+    }
+}`;
+
+const CODE_HMAC = `@Service
+@Slf4j
+public class SignatureVerifierService {
+
+    private static final String HMAC_SHA256 = "HmacSHA256";
+    private static final String SIGNATURE_PREFIX = "sha256=";
+
+    @Value("\\u0024{github.webhook-secret}")
+    private String webhookSecret;
+
+    /**
+     * Verifies GitHub's X-Hub-Signature-256 header.
+     * Anyone who finds the webhook URL without the secret
+     * gets a 401 — protects the Gemini quota from abuse.
+     */
+    public boolean verify(String rawBody, String signature) {
+        if (rawBody == null || signature == null) return false;
+
+        if (!signature.startsWith(SIGNATURE_PREFIX)) {
+            log.warn("Signature missing 'sha256=' prefix");
+            return false;
+        }
+
+        String expected = computeHmac(rawBody);
+        String provided = signature.substring(SIGNATURE_PREFIX.length());
+
+        // constant-time comparison — prevents timing attacks
+        return MessageDigest.isEqual(
+                expected.getBytes(StandardCharsets.UTF_8),
+                provided.getBytes(StandardCharsets.UTF_8)
+        );
+    }
+
+    private String computeHmac(String data) {
+        Mac mac = Mac.getInstance(HMAC_SHA256);
+        mac.init(new SecretKeySpec(
+                webhookSecret.getBytes(StandardCharsets.UTF_8),
+                HMAC_SHA256));
+        return bytesToHex(mac.doFinal(
+                data.getBytes(StandardCharsets.UTF_8)));
+    }
+}`;
+
+const CODE_KAFKA = `@Slf4j
+@Component
+@RequiredArgsConstructor
+public class ApplicationEventConsumer {
+
+    private final ScreeningService screeningService;
+    private final ObjectMapper objectMapper;
+
+    /**
+     * Candidate applies → Application Service publishes an
+     * event → this consumer triggers the AI screening
+     * pipeline asynchronously. Services stay decoupled.
+     */
+    @KafkaListener(
+        topics = "application-submitted",
+        groupId = "screening-group")
+    public void onApplicationSubmitted(String message) {
+        try {
+            JsonNode node = objectMapper.readTree(message);
+            Long applicationId = node.get("applicationId").asLong();
+            Long jobId         = node.get("jobId").asLong();
+            String email       = node.get("candidateEmail").asText();
+            String resumePath  = node.get("resumeFilePath").asText();
+
+            log.info("Received application-submitted: id={}", applicationId);
+            screeningService.screen(applicationId, jobId, email, resumePath);
+
+        } catch (Exception e) {
+            log.error("Failed to process event: {}", e.getMessage());
+        }
+    }
+}`;
+
+const CODE_SCREENING = `/**
+ * Full screening pipeline, triggered by Kafka event.
+ */
+public void screen(Long applicationId, Long jobId,
+                   String candidateEmail, String resumePath) {
+
+    // 1 — fetch the job description from Job Service
+    //     via Eureka load-balanced inter-service call
+    String jobJson = webClientBuilder.build()
+            .get()
+            .uri("lb://JOB-SERVICE/api/jobs/" + jobId)
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+
+    // 2 — extract raw text from the uploaded resume PDF
+    String resumeText = resumeParserService.parse(resumePath);
+
+    // 3 — Groq LLaMA scores the resume against the JD
+    ScreeningResultDto result =
+            openAIService.scoreResume(resumeText, jobJson);
+
+    // 4 — persist score + emit event for Notification Service
+    repository.save(toEntity(applicationId, result));
+    eventProducer.publishScreeningCompleted(applicationId, result);
+}`;
+
+const PROJECTS = {
+  reviewpilot: {
+    name: "reviewpilot",
+    title: "ReviewPilot — AI code-review bot for GitHub PRs",
+    github: "https://github.com/sahilcounder/reviewpilot",
+    pitch: "Every PR opened on a connected repo gets reviewed by Gemini 2.5 Flash with a senior-engineer prompt, and structured feedback (score, issues by severity, fix suggestions, verdict) lands as a PR comment. Runs entirely on free tiers.",
+    stack: ["Java 21", "Spring Boot 3.2", "Gemini 2.5 Flash", "WebClient", "Docker", "Render"],
+    color: T.orange,
+    stats: [
+      ["webhook ack", "~100ms"], ["monthly cost", "INR 0"], ["diff capacity", "1000+ lines"], ["uptime", "24/7 via pings"],
+    ],
+    files: [
+      { name: "ReviewService.java", code: CODE_REVIEWSERVICE, note: "the @Async orchestrator" },
+      { name: "SignatureVerifier.java", code: CODE_HMAC, note: "HMAC-SHA256 webhook auth" },
+    ],
+    flow: [
+      { n: "GitHub PR opened", c: T.dim },
+      { n: "POST /api/webhook/github", c: T.blue },
+      { n: "verify HMAC-SHA256", c: T.red },
+      { n: "200 OK · <100ms", c: T.green },
+      { n: "@Async background thread", c: T.purple },
+      { n: "fetch diff → chunk → filter noise", c: T.fg },
+      { n: "Gemini review (JSON mode)", c: T.orange },
+      { n: "structured comment on PR", c: T.green },
+    ],
+    decisions: [
+      "GitHub kills webhooks after 10s — ack immediately, do all slow work async on a custom thread pool",
+      "DiffChunker caps chunks at 60K chars and skips lockfiles/minified assets — never feeds a 2MB diff to an LLM",
+      "responseMimeType: application/json forces Gemini into parseable structured output",
+      "MessageDigest.isEqual() for constant-time signature comparison — no timing side-channel",
+    ],
+  },
+  hireflow: {
+    name: "hireflow",
+    title: "HireFlow — AI-powered hiring platform",
+    github: "https://github.com/sahilcounder/hireflow",
+    pitch: "Six Spring Boot microservices behind a gateway. Candidates apply with a resume; a Kafka event triggers Groq LLaMA to score it against the job description; recruiters see a ranked shortlist and email alerts go out automatically.",
+    stack: ["Spring Boot 3.2", "Spring Cloud", "Kafka", "PostgreSQL", "MongoDB", "Groq LLaMA", "Docker Compose"],
+    color: T.cyan,
+    stats: [
+      ["services", "6 + eureka"], ["auth", "JWT @ gateway"], ["events", "kafka topics"], ["datastores", "postgres + mongo"],
+    ],
+    files: [
+      { name: "ApplicationEventConsumer.java", code: CODE_KAFKA, note: "kafka listener" },
+      { name: "ScreeningService.java", code: CODE_SCREENING, note: "AI scoring pipeline" },
+    ],
+    services: [
+      { name: "api-gateway", port: 8080, role: "entry · JWT validation", c: T.purple },
+      { name: "auth-service", port: 8081, role: "register/login · BCrypt", c: T.blue },
+      { name: "job-service", port: 8082, role: "job CRUD · role-based", c: T.green },
+      { name: "application-svc", port: 8083, role: "apply + resume upload", c: T.yellow },
+      { name: "ai-screening", port: 8084, role: "Groq LLaMA scoring", c: T.red },
+      { name: "notification", port: 8085, role: "email via MailHog", c: T.cyan },
+    ],
+    decisions: [
+      "Kafka decouples apply → screen → notify; a slow LLM call never blocks the candidate's submit request",
+      "Eureka discovery + lb:// URIs mean services find each other without hardcoded hosts",
+      "Gateway validates JWT once at the edge — downstream services trust the forwarded identity",
+      "Polyglot persistence: Postgres for relational job/app data, Mongo for flexible screening results",
+    ],
+  },
+};
+
+/* ───────────── pom.xml skills ───────────── */
+const POM = `<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="https://sahil.dev/skills">
+
+  <groupId>dev.sahil.counder</groupId>
+  <artifactId>technical-stack</artifactId>
+  <version>4.3.0</version>
+  <packaging>engineer</packaging>
+
+  <properties>
+    <java.version>21</java.version>
+    <experience>4.3 years</experience>
+    <location>Nagpur, IN · open to relocate</location>
+  </properties>
+
+  <dependencies>
+
+    <!-- core platform -->
+    <dependency>
+      <groupId>languages</groupId>
+      <artifactId>java</artifactId>
+      <version>8 → 21</version>
+      <scope>expert · daily-driver</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-boot · mvc · data-jpa · security</artifactId>
+      <version>3.2</version>
+      <scope>production · 4+ yrs</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-orm</artifactId>
+      <scope>production</scope>
+    </dependency>
+
+    <!-- architecture -->
+    <dependency>
+      <groupId>patterns</groupId>
+      <artifactId>microservices · rest · kafka-events</artifactId>
+      <scope>production · 9+ services shipped</scope>
+    </dependency>
+    <dependency>
+      <groupId>concepts</groupId>
+      <artifactId>solid · design-patterns · multithreading · jvm-tuning</artifactId>
+      <scope>applied</scope>
+    </dependency>
+
+    <!-- data -->
+    <dependency>
+      <groupId>databases</groupId>
+      <artifactId>mysql · oracle · postgresql · mongodb</artifactId>
+      <scope>400K+ daily txns tuned</scope>
+    </dependency>
+
+    <!-- delivery -->
+    <dependency>
+      <groupId>devops</groupId>
+      <artifactId>docker · kubernetes · jenkins · azure</artifactId>
+      <scope>ci-cd · production</scope>
+    </dependency>
+    <dependency>
+      <groupId>testing</groupId>
+      <artifactId>junit5 · mockito · tdd</artifactId>
+      <scope>80%+ coverage maintained</scope>
+    </dependency>
+
+    <!-- ai integration -->
+    <dependency>
+      <groupId>llm</groupId>
+      <artifactId>gemini · groq-llama · prompt-design</artifactId>
+      <scope>side-projects → production patterns</scope>
+    </dependency>
+
+    <!-- frontend -->
+    <dependency>
+      <groupId>web</groupId>
+      <artifactId>react · redux · javascript · bootstrap</artifactId>
+      <scope>full-stack capable</scope>
+    </dependency>
+
+  </dependencies>
+</project>`;
+
+/* ───────────── contact.sh ───────────── */
+const CONTACT_SH = `#!/bin/bash
+# contact.sh — get in touch with Sahil
+set -e
+
+NAME="Sahil Counder"
+ROLE="Java Developer · Full-Stack"
+EMAIL="coundersahil02@gmail.com"
+PHONE="+91 98346 80110"
+LINKEDIN="linkedin.com/in/sahil-counder"
+LOCATION="Nagpur, Maharashtra, IN (UTC+5:30)"
+STATUS="open to opportunities"
+
+echo "establishing connection..."
+echo "→ \\u0024EMAIL"
+
+# works best with: interesting backend problems,
+# microservices at scale, AI-integrated systems
+exit 0`;
+
+/* ───────────── syntax highlighting ───────────── */
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+const hlJava = (code) =>
+  esc(code).replace(
+    /(\/\*\*[\s\S]*?\*\/)|(\/\/[^\n]*)|(&quot;|"(?:[^"\\]|\\.)*")|(@\w+)|\b(public|private|protected|static|final|class|interface|void|return|new|if|else|try|catch|throws|throw|import|package|extends|implements|null|boolean|int|long|byte|true|false)\b|\b(String|List|Map|Long|JsonNode|ObjectMapper|WebhookPayload|ReviewResult|ScreeningResultDto|Mac|SecretKeySpec|MessageDigest|StandardCharsets|Exception|GitHubClient|GeminiClient|DiffChunkerService|ScreeningService)\b/g,
+    (m, doc, com, str, ann, kw, typ) => {
+      if (doc) return `<span style="color:${T.dim};font-style:italic">${doc}</span>`;
+      if (com) return `<span style="color:${T.dim};font-style:italic">${com}</span>`;
+      if (str) return `<span style="color:${T.green}">${str}</span>`;
+      if (ann) return `<span style="color:${T.yellow}">${ann}</span>`;
+      if (kw) return `<span style="color:${T.orange}">${kw}</span>`;
+      if (typ) return `<span style="color:${T.blue}">${typ}</span>`;
+      return m;
+    }
+  );
+
+const hlXml = (code) =>
+  esc(code).replace(
+    /(&lt;!--[\s\S]*?--&gt;)|(&lt;\/?)([\w.?-]+)|("[^"]*")|(&gt;)/g,
+    (m, com, open, tag, str, close) => {
+      if (com) return `<span style="color:${T.dim};font-style:italic">${com}</span>`;
+      if (open !== undefined && tag) return `<span style="color:${T.faint}">${open}</span><span style="color:${T.red}">${tag}</span>`;
+      if (str) return `<span style="color:${T.green}">${str}</span>`;
+      if (close) return `<span style="color:${T.faint}">${close}</span>`;
+      return m;
+    }
+  );
+
+const hlBash = (code) =>
+  esc(code).replace(
+    /(#[^\n]*)|("(?:[^"\\]|\\.)*")|\b(echo|exit|set|open)\b|^([A-Z_]+)(?==)/gm,
+    (m, com, str, kw, varname) => {
+      if (com) return `<span style="color:${T.dim};font-style:italic">${com}</span>`;
+      if (str) return `<span style="color:${T.green}">${str}</span>`;
+      if (kw) return `<span style="color:${T.orange}">${kw}</span>`;
+      if (varname) return `<span style="color:${T.purple}">${varname}</span>`;
+      return m;
+    }
+  );
+
+/* fix escaped dollar-brace sequences for display */
+const undollar = (s) => s.replace(/\\u0024/g, "$");
+
+/* ───────────── small components ───────────── */
+function CodeBlock({ code, lang = "java", maxH = 460 }) {
+  const raw = undollar(code);
+  const html = lang === "java" ? hlJava(raw) : lang === "xml" ? hlXml(raw) : hlBash(raw);
+  const lines = raw.split("\n").length;
+  return (
+    <div style={{ display: "flex", background: "#0B0F16", border: `1px solid ${T.line}`, borderRadius: 6, overflow: "hidden" }}>
+      <div style={{ padding: "14px 0", background: "#090D13", borderRight: `1px solid ${T.line}`, userSelect: "none", flexShrink: 0 }}>
+        {Array.from({ length: lines }, (_, i) => (
+          <div key={i} style={{ padding: "0 10px", fontSize: 11, lineHeight: "19px", color: T.faint, textAlign: "right", minWidth: 34 }}>{i + 1}</div>
+        ))}
+      </div>
+      <pre style={{ margin: 0, padding: "14px 16px", overflowX: "auto", overflowY: "auto", maxHeight: maxH, fontSize: 11.5, lineHeight: "19px", flex: 1, fontFamily: "inherit" }}
+        dangerouslySetInnerHTML={{ __html: html }} />
+    </div>
+  );
+}
+
+function Kbd({ children }) {
+  return <span style={{ padding: "1px 6px", border: `1px solid ${T.line}`, borderBottomWidth: 2, borderRadius: 4, fontSize: 10, color: T.dim, background: T.raise }}>{children}</span>;
+}
+
+/* ───────────── boot screen ───────────── */
+function Boot({ onDone }) {
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    if (step >= BOOT_LINES.length) { const t = setTimeout(onDone, 500); return () => clearTimeout(t); }
+    const t = setTimeout(() => setStep(step + 1), step === 1 ? 350 : 170);
+    return () => clearTimeout(t);
+  }, [step, onDone]);
+
+  return (
+    <div onClick={onDone} style={{ minHeight: "100vh", background: T.bg, padding: "48px 28px", cursor: "pointer", fontFamily: "'JetBrains Mono', monospace" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        {BOOT_LINES.slice(0, step).map((l, i) => {
+          if (l.t === "banner") return (
+            <pre key={i} style={{ color: T.green, fontSize: "clamp(7px, 1.8vw, 13px)", lineHeight: 1.25, margin: "10px 0 2px", overflow: "hidden" }}>
+              {BANNER.join("\n")}
+            </pre>
+          );
+          if (l.t === "gap") return <div key={i} style={{ height: 12 }} />;
+          if (l.t === "cmd") return <div key={i} style={{ color: T.bright, fontSize: 13, marginBottom: 4 }}>{l.s}</div>;
+          if (l.t === "ver") return <div key={i} style={{ color: T.dim, fontSize: 12 }}>{l.s}</div>;
+          return (
+            <div key={i} style={{ fontSize: 12, lineHeight: 1.8, color: T.fg }}>
+              <span style={{ color: T.faint }}>2026-06-05 </span>
+              <span style={{ color: l.lvl === "OK" ? T.green : T.blue }}>{l.lvl === "OK" ? "INFO " : "INFO "}</span>
+              <span style={{ color: T.faint }}>--- [main] </span>
+              <span style={{ color: l.lvl === "OK" ? T.green : T.fg }}>{l.s}</span>
+            </div>
+          );
+        })}
+        {step < BOOT_LINES.length && <span style={{ display: "inline-block", width: 8, height: 15, background: T.green, animation: "blink 1s step-end infinite" }} />}
+        <div style={{ marginTop: 36, fontSize: 10, color: T.faint, letterSpacing: ".1em" }}>CLICK ANYWHERE TO SKIP</div>
+      </div>
+      <style>{`@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}`}</style>
+    </div>
+  );
+}
+
+/* ───────────── terminal ───────────── */
+function Terminal({ openTab }) {
+  const [lines, setLines] = useState([
+    { c: T.dim, s: "sahil-shell v1.0 — type 'help' for commands" },
+  ]);
+  const [input, setInput] = useState("");
+  const [hist, setHist] = useState([]);
+  const [hIdx, setHIdx] = useState(-1);
+  const bodyRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => { if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight; }, [lines]);
+
+  const out = (arr) => setLines((p) => [...p, ...arr]);
+
+  const run = (raw) => {
+    const cmd = raw.trim();
+    out([{ c: T.bright, s: `sahil@dev:~$ ${cmd}`, prompt: true }]);
+    if (!cmd) return;
+    const lc = cmd.toLowerCase();
+
+    if (lc === "clear") { setLines([]); return; }
+    if (lc === "help") {
+      out([
+        { c: T.fg, s: "available commands:" },
+        { c: T.dim, s: "  whoami          who is this guy" },
+        { c: T.dim, s: "  ls              list workspace files" },
+        { c: T.dim, s: "  open <file>     open a tab (e.g. open projects)" },
+        { c: T.dim, s: "  projects        list side projects" },
+        { c: T.dim, s: "  skills          quick stack summary" },
+        { c: T.dim, s: "  contact         how to reach me" },
+        { c: T.dim, s: "  java -version   check the jvm" },
+        { c: T.dim, s: "  mvn clean install" },
+        { c: T.dim, s: "  sudo hire-me    (requires recruiter privileges)" },
+        { c: T.dim, s: "  cp resume.docx ~/downloads" },
+        { c: T.dim, s: "  clear           wipe terminal" },
+      ]);
+    } else if (lc === "whoami") {
+      out([
+        { c: T.bright, s: "Sahil Counder — Java Developer · Full-Stack" },
+        { c: T.dim, s: "4+ yrs · enterprise backends · Nagpur, IN · currently @ Pilog Group" },
+      ]);
+    } else if (lc === "ls" || lc === "ls -la") {
+      out([{ c: T.blue, s: "readme.md   projects/   career.log   pom.xml   contact.sh" }]);
+    } else if (lc.startsWith("open ")) {
+      const target = lc.replace("open ", "").replace("/", "").replace(".md", "").replace(".log", "").replace(".xml", "").replace(".sh", "");
+      const map = { readme: "readme", projects: "projects", career: "career", pom: "pom", contact: "contact" };
+      if (map[target]) { openTab(map[target]); out([{ c: T.green, s: `opened ${target} ✓` }]); }
+      else out([{ c: T.red, s: `open: ${target}: no such file` }]);
+    } else if (lc === "projects") {
+      out([
+        { c: T.orange, s: "reviewpilot/  — AI code-review bot · Java 21 · Gemini · webhooks" },
+        { c: T.faint,  s: "  remote: github.com/sahilcounder/reviewpilot" },
+        { c: T.cyan,   s: "hireflow/     — hiring platform · 6 microservices · Kafka · Groq" },
+        { c: T.faint,  s: "  remote: github.com/sahilcounder/hireflow" },
+        { c: T.dim,    s: "→ run 'open projects' to browse source & architecture" },
+      ]);
+    } else if (lc === "skills") {
+      out([
+        { c: T.fg, s: "Java 21 · Spring Boot · Hibernate · Microservices · Kafka" },
+        { c: T.fg, s: "MySQL · Oracle · PostgreSQL · MongoDB · Docker · K8s · Azure" },
+        { c: T.dim, s: "→ 'open pom' for the full dependency tree" },
+      ]);
+    } else if (lc === "contact") {
+      out([
+        { c: T.fg,   s: "email     coundersahil02@gmail.com" },
+        { c: T.fg,   s: "phone     +91 98346 80110" },
+        { c: T.fg,   s: "github    github.com/sahilcounder" },
+        { c: T.fg,   s: "linkedin  linkedin.com/in/sahil-counder" },
+      ]);
+    } else if (lc === "java -version" || lc === "java --version") {
+      out([
+        { c: T.fg, s: 'openjdk version "21" 2023-09-19 LTS' },
+        { c: T.dim, s: "Sahil Runtime Environment (build 4.3-years-production)" },
+        { c: T.dim, s: "64-Bit Engineer VM (mixed mode, sharing)" },
+      ]);
+    } else if (lc === "mvn clean install" || lc === "mvn install") {
+      out([
+        { c: T.dim, s: "[INFO] Scanning for projects..." },
+        { c: T.dim, s: "[INFO] Building sahil-counder 4.3.0" },
+        { c: T.dim, s: "[INFO] Tests run: 847, Failures: 0, Errors: 0, Skipped: 0" },
+        { c: T.green, s: "[INFO] BUILD SUCCESS" },
+        { c: T.dim, s: "[INFO] Total time: 4.3 years" },
+      ]);
+    } else if (lc === "sudo hire-me" || lc === "hire-me") {
+      out([
+        { c: T.dim, s: "[sudo] password for recruiter: ********" },
+        { c: T.green, s: "access granted." },
+        { c: T.bright, s: "→ coundersahil02@gmail.com · +91 98346 80110" },
+        { c: T.dim, s: "response time: usually < 24h" },
+      ]);
+    } else if (lc === "rm -rf /" || lc.startsWith("rm -rf")) {
+      out([{ c: T.red, s: "nice try. this portfolio has 80%+ test coverage, it survives." }]);
+    } else if (lc === "pwd") {
+      out([{ c: T.fg, s: "/home/sahil/dev/portfolio" }]);
+    } else if (lc === "git log") {
+      out([{ c: T.dim, s: "→ 'open career' renders the full log with diffs" }]);
+    } else if (lc === "ls resume" || lc === "cat resume" || lc === "download resume" || lc === "cp resume.docx ~/downloads") {
+      downloadResume();
+      out([
+        { c: T.green, s: "downloading Sahil_Counder_Resume.docx..." },
+        { c: T.dim,   s: "check your downloads folder" },
+      ]);
+    } else {
+      out([{ c: T.red, s: `${cmd}: command not found — try 'help'` }]);
+    }
+  };
+
+  const onKey = (e) => {
+    if (e.key === "Enter") {
+      run(input);
+      if (input.trim()) setHist((p) => [input, ...p]);
+      setInput(""); setHIdx(-1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const n = Math.min(hIdx + 1, hist.length - 1);
+      if (hist[n]) { setHIdx(n); setInput(hist[n]); }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const n = hIdx - 1;
+      if (n < 0) { setHIdx(-1); setInput(""); } else { setHIdx(n); setInput(hist[n]); }
+    }
+  };
+
+  return (
+    <div onClick={() => inputRef.current?.focus()} style={{ borderTop: `1px solid ${T.line}`, background: "#090D13", cursor: "text" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 14px", borderBottom: `1px solid ${T.line}` }}>
+        <span style={{ width: 7, height: 7, borderRadius: "50%", background: T.green }} />
+        <span style={{ fontSize: 10, letterSpacing: ".12em", color: T.dim }}>TERMINAL — bash · try it, it works</span>
+      </div>
+      <div ref={bodyRef} style={{ height: 168, overflowY: "auto", padding: "10px 14px" }}>
+        {lines.map((l, i) => (
+          <div key={i} style={{ fontSize: 11.5, lineHeight: 1.75, color: l.c, whiteSpace: "pre-wrap" }}>
+            {l.prompt ? (<><span style={{ color: T.green }}>sahil@dev</span><span style={{ color: T.faint }}>:~$ </span><span style={{ color: T.bright }}>{l.s.replace("sahil@dev:~$ ", "")}</span></>) : l.s}
+          </div>
+        ))}
+        <div style={{ display: "flex", alignItems: "center", fontSize: 11.5 }}>
+          <span style={{ color: T.green }}>sahil@dev</span>
+          <span style={{ color: T.faint }}>:~$&nbsp;</span>
+          <input
+            ref={inputRef} value={input}
+            onChange={(e) => setInput(e.target.value)} onKeyDown={onKey}
+            spellCheck={false} autoComplete="off"
+            style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: T.bright, fontFamily: "inherit", fontSize: 11.5, caretColor: T.green }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ───────────── tab: readme.md ───────────── */
+function ReadmeTab({ openTab }) {
+  const phrases = ["Spring Boot microservices", "event-driven systems w/ Kafka", "Fortune 500 MDM platforms", "AI-integrated backends", "APIs that hold up under load"];
+  const [pi, setPi] = useState(0);
+  const [txt, setTxt] = useState("");
+  const [del, setDel] = useState(false);
+
+  useEffect(() => {
+    const full = phrases[pi];
+    const t = setTimeout(() => {
+      if (!del) {
+        if (txt.length < full.length) setTxt(full.slice(0, txt.length + 1));
+        else setTimeout(() => setDel(true), 1400);
+      } else {
+        if (txt.length > 0) setTxt(txt.slice(0, -1));
+        else { setDel(false); setPi((pi + 1) % phrases.length); }
+      }
+    }, del ? 26 : 52);
+    return () => clearTimeout(t);
+  }, [txt, del, pi]);
+
+  return (
+    <div style={{ padding: "36px 30px 44px", maxWidth: 800 }}>
+      <div style={{ color: T.dim, fontSize: 11, marginBottom: 22 }}># readme.md</div>
+
+      <div style={{ fontSize: 12, color: T.dim, marginBottom: 6 }}>
+        <span style={{ color: T.faint }}>$</span> whoami
+      </div>
+      <h1 style={{ fontSize: "clamp(30px, 6vw, 52px)", fontWeight: 700, color: T.bright, letterSpacing: "-.02em", lineHeight: 1.05, margin: "0 0 4px" }}>
+        Sahil Counder
+      </h1>
+      <div style={{ fontSize: "clamp(14px, 2.4vw, 18px)", color: T.orange, marginBottom: 22 }}>
+        Java Developer <span style={{ color: T.faint }}>·</span> Full-Stack
+      </div>
+
+      <div style={{ fontSize: 13, color: T.fg, lineHeight: 1.7, marginBottom: 6 }}>
+        4+ years building enterprise backends across logistics, insurance, healthcare and master-data management — currently shipping MDM modules for Fortune 500 clients at Pilog Group.
+      </div>
+      <div style={{ fontSize: 13, color: T.dim, marginBottom: 30 }}>
+        I build <span style={{ color: T.green }}>{txt}</span><span style={{ display: "inline-block", width: 7, height: 14, background: T.green, verticalAlign: "-2px", animation: "blink 1s step-end infinite" }} />
+      </div>
+
+      {/* uptime-style metrics */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10, marginBottom: 30 }}>
+        {[
+          ["experience", "4.3 yrs", T.green, "uptime since dec 2021"],
+          ["microservices", "9+", T.blue, "shipped to production"],
+          ["txn volume", "400K/day", T.orange, "tuned at cognizant"],
+          ["test coverage", "80%+", T.purple, "junit + mockito"],
+        ].map(([k, v, c, sub]) => (
+          <div key={k} style={{ background: T.raise, border: `1px solid ${T.line}`, borderRadius: 6, padding: "14px 14px 12px" }}>
+            <div style={{ fontSize: 10, color: T.dim, letterSpacing: ".08em", marginBottom: 6 }}>{k}</div>
+            <div style={{ fontSize: 22, fontWeight: 700, color: c, lineHeight: 1 }}>{v}</div>
+            <div style={{ fontSize: 9.5, color: T.faint, marginTop: 6 }}>{sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* quick links rendered as markdown */}
+      <div style={{ fontSize: 12.5, lineHeight: 2.1, color: T.fg }}>
+        <div><span style={{ color: T.faint }}>## </span><span style={{ color: T.bright }}>jump in</span></div>
+        <div><span style={{ color: T.faint }}>- </span><a onClick={() => openTab("projects")} style={{ color: T.blue, cursor: "pointer", borderBottom: `1px dashed ${T.blue}44` }}>projects/</a><span style={{ color: T.dim }}> — two AI side projects with real code</span></div>
+        <div><span style={{ color: T.faint }}>- </span><a onClick={() => openTab("career")} style={{ color: T.blue, cursor: "pointer", borderBottom: `1px dashed ${T.blue}44` }}>career.log</a><span style={{ color: T.dim }}> — work history as a git log</span></div>
+        <div><span style={{ color: T.faint }}>- </span><a onClick={() => openTab("pom")} style={{ color: T.blue, cursor: "pointer", borderBottom: `1px dashed ${T.blue}44` }}>pom.xml</a><span style={{ color: T.dim }}> — skills as maven dependencies</span></div>
+        <div><span style={{ color: T.faint }}>- </span>or just use the <span style={{ color: T.green }}>terminal below</span><span style={{ color: T.dim }}> — try </span><span style={{ color: T.orange }}>sudo hire-me</span></div>
+      </div>
+
+      {/* resume download */}
+      <div style={{ marginTop: 22, paddingTop: 20, borderTop: `1px solid ${T.line}` }}>
+        <button
+          onClick={downloadResume}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: "9px 18px",
+            background: "transparent",
+            border: `1px solid ${T.line}`,
+            borderRadius: 6,
+            color: T.dim,
+            fontSize: 11.5,
+            fontFamily: "inherit",
+            cursor: "pointer",
+            transition: "all .15s",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = T.green; e.currentTarget.style.color = T.green; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = T.line; e.currentTarget.style.color = T.dim; }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Sahil_Counder_Resume.docx
+        </button>
+        <span style={{ marginLeft: 12, fontSize: 10, color: T.faint }}>· last updated Jun 2026</span>
+      </div>
+    </div>
+  );
+}
+
+/* ───────────── tab: projects ───────────── */
+function ProjectsTab() {
+  const [open, setOpen] = useState("reviewpilot");
+  const [fileIdx, setFileIdx] = useState(0);
+  const [view, setView] = useState("overview");
+  const p = PROJECTS[open];
+
+  const switchProject = (k) => { setOpen(k); setFileIdx(0); setView("overview"); };
+
+  return (
+    <div style={{ padding: "28px 30px 44px" }}>
+      <div style={{ color: T.dim, fontSize: 11, marginBottom: 18 }}>~/dev/projects — 2 directories</div>
+
+      {/* project switcher */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 22, flexWrap: "wrap" }}>
+        {Object.values(PROJECTS).map((pr) => (
+          <button key={pr.name} onClick={() => switchProject(pr.name)} style={{
+            display: "flex", alignItems: "center", gap: 8, padding: "9px 16px",
+            background: open === pr.name ? T.raise : "transparent",
+            border: `1px solid ${open === pr.name ? pr.color + "66" : T.line}`,
+            borderRadius: 6, cursor: "pointer", fontFamily: "inherit",
+          }}>
+            <span style={{ color: pr.color, fontSize: 12 }}>▸</span>
+            <span style={{ color: open === pr.name ? T.bright : T.dim, fontSize: 12.5 }}>{pr.name}/</span>
+          </button>
+        ))}
+      </div>
+
+      {/* title + pitch */}
+      <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", marginBottom: 10 }}>
+        <h2 style={{ fontSize: "clamp(17px, 3vw, 22px)", color: p.color, fontWeight: 700, margin: 0, letterSpacing: "-.01em" }}>{p.title}</h2>
+        <a
+          href={p.github} target="_blank" rel="noopener noreferrer"
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 7,
+            padding: "5px 11px",
+            background: T.raise,
+            border: `1px solid ${T.line}`,
+            borderRadius: 5,
+            color: T.dim,
+            fontSize: 11,
+            textDecoration: "none",
+            transition: "border-color .15s, color .15s",
+            whiteSpace: "nowrap",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = p.color + "88"; e.currentTarget.style.color = p.color; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = T.line; e.currentTarget.style.color = T.dim; }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span style={{ fontFamily: "inherit", letterSpacing: ".03em" }}>
+            {p.github.replace("https://github.com/", "")}
+          </span>
+          <span style={{ fontSize: 10, opacity: .6 }}>↗</span>
+        </a>
+      </div>
+      <p style={{ fontSize: 13, color: T.fg, lineHeight: 1.75, maxWidth: 720, margin: "0 0 16px" }}>{p.pitch}</p>
+
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 }}>
+        {p.stack.map((s) => (
+          <span key={s} style={{ fontSize: 10.5, padding: "4px 10px", borderRadius: 4, background: T.raise, border: `1px solid ${T.line}`, color: T.dim }}>{s}</span>
+        ))}
+      </div>
+
+      {/* stats strip */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 1, background: T.line, border: `1px solid ${T.line}`, borderRadius: 6, overflow: "hidden", marginBottom: 24 }}>
+        {p.stats.map(([k, v]) => (
+          <div key={k} style={{ background: T.panel, padding: "12px 14px" }}>
+            <div style={{ fontSize: 9.5, color: T.faint, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 4 }}>{k}</div>
+            <div style={{ fontSize: 14, color: p.color, fontWeight: 600 }}>{v}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* view switcher */}
+      <div style={{ display: "flex", gap: 2, marginBottom: 16, borderBottom: `1px solid ${T.line}` }}>
+        {["overview", "source", "architecture"].map((v) => (
+          <button key={v} onClick={() => setView(v)} style={{
+            padding: "8px 16px", background: "transparent", border: "none",
+            borderBottom: `2px solid ${view === v ? p.color : "transparent"}`,
+            color: view === v ? T.bright : T.dim, fontSize: 11.5, cursor: "pointer",
+            fontFamily: "inherit", letterSpacing: ".04em",
+          }}>{v}</button>
+        ))}
+      </div>
+
+      {/* OVERVIEW — design decisions */}
+      {view === "overview" && (
+        <div>
+          <div style={{ fontSize: 11, color: T.dim, marginBottom: 12, letterSpacing: ".08em" }}>WHY IT'S BUILT THIS WAY</div>
+          {p.decisions.map((d, i) => (
+            <div key={i} style={{ display: "flex", gap: 12, padding: "11px 0", borderBottom: `1px solid ${T.line}55`, fontSize: 12.5, color: T.fg, lineHeight: 1.65 }}>
+              <span style={{ color: p.color, flexShrink: 0, fontSize: 11, marginTop: 2 }}>{String(i + 1).padStart(2, "0")}</span>
+              <span>{d}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 18, fontSize: 11, color: T.faint }}>→ switch to <span style={{ color: p.color }}>source</span> to read the actual implementation</div>
+        </div>
+      )}
+
+      {/* SOURCE — real code */}
+      {view === "source" && (
+        <div>
+          <div style={{ display: "flex", gap: 2, marginBottom: 10, flexWrap: "wrap" }}>
+            {p.files.map((f, i) => (
+              <button key={f.name} onClick={() => setFileIdx(i)} style={{
+                padding: "6px 13px", fontSize: 11, fontFamily: "inherit", cursor: "pointer",
+                background: fileIdx === i ? T.raise : "transparent",
+                border: `1px solid ${fileIdx === i ? T.line : "transparent"}`,
+                borderRadius: "5px 5px 0 0", color: fileIdx === i ? T.orange : T.dim,
+              }}>
+                {f.name} <span style={{ color: T.faint, fontSize: 9.5 }}>· {f.note}</span>
+              </button>
+            ))}
+          </div>
+          <CodeBlock code={p.files[fileIdx].code} lang="java" />
+          <div style={{ marginTop: 10, fontSize: 10.5, color: T.faint }}>unedited source from the repo — this is the actual class</div>
+        </div>
+      )}
+
+      {/* ARCHITECTURE */}
+      {view === "architecture" && (
+        <div>
+          {p.flow && (
+            <div style={{ maxWidth: 480 }}>
+              {p.flow.map((n, i) => (
+                <div key={i}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{ width: 22, textAlign: "right", fontSize: 10, color: T.faint, flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</div>
+                    <div style={{
+                      flex: 1, padding: "9px 14px", borderRadius: 5, fontSize: 12,
+                      background: T.raise, border: `1px solid ${n.c}55`, color: n.c,
+                    }}>{n.n}</div>
+                  </div>
+                  {i < p.flow.length - 1 && (
+                    <div style={{ marginLeft: 34, padding: "2px 0 2px 17px", color: T.faint, fontSize: 11, borderLeft: `1px solid ${T.line}` }}>│</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+          {p.services && (
+            <div>
+              <div style={{ fontSize: 11, color: T.dim, marginBottom: 12, letterSpacing: ".08em" }}>SERVICE TOPOLOGY — docker compose · eureka discovery</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+                {p.services.map((s) => (
+                  <div key={s.name} style={{ background: T.raise, border: `1px solid ${s.c}44`, borderLeft: `3px solid ${s.c}`, borderRadius: 5, padding: "12px 14px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+                      <span style={{ fontSize: 12.5, color: s.c, fontWeight: 600 }}>{s.name}</span>
+                      <span style={{ fontSize: 10, color: T.faint }}>:{s.port}</span>
+                    </div>
+                    <div style={{ fontSize: 10.5, color: T.dim }}>{s.role}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: 14, padding: "10px 14px", background: T.raise, border: `1px dashed ${T.line}`, borderRadius: 5, fontSize: 11, color: T.dim, lineHeight: 1.7 }}>
+                <span style={{ color: T.red }}>kafka</span> topics connect application-svc → ai-screening → notification asynchronously.
+                {" "}<span style={{ color: T.purple }}>eureka</span> (:8761) handles discovery; gateway validates <span style={{ color: T.blue }}>JWT</span> at the edge.
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────────── tab: career.log ───────────── */
+function CareerTab() {
+  const [open, setOpen] = useState("a3f8e21");
+  return (
+    <div style={{ padding: "28px 30px 44px", maxWidth: 780 }}>
+      <div style={{ color: T.dim, fontSize: 11, marginBottom: 4 }}>
+        <span style={{ color: T.faint }}>$</span> git log --graph --all --career
+      </div>
+      <div style={{ color: T.faint, fontSize: 10.5, marginBottom: 24 }}>click a commit to expand the diff</div>
+
+      {CAREER.map((c, i) => (
+        <div key={c.hash} style={{ display: "flex", gap: 0 }}>
+          {/* graph rail */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 28, flexShrink: 0 }}>
+            <div style={{ width: 11, height: 11, borderRadius: "50%", border: `2px solid ${c.color}`, background: open === c.hash ? c.color : T.bg, marginTop: 6, flexShrink: 0, transition: "background .2s" }} />
+            {i < CAREER.length - 1 && <div style={{ width: 2, flex: 1, background: T.line, minHeight: 18 }} />}
+          </div>
+
+          {/* commit */}
+          <div style={{ flex: 1, paddingBottom: i < CAREER.length - 1 ? 18 : 0, minWidth: 0 }}>
+            <div onClick={() => setOpen(open === c.hash ? null : c.hash)} style={{ cursor: "pointer" }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap", marginBottom: 3 }}>
+                <span style={{ color: T.yellow, fontSize: 11.5 }}>{c.hash}</span>
+                {c.head && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 3, background: `${T.green}22`, border: `1px solid ${T.green}55`, color: T.green }}>HEAD → career</span>}
+                <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 3, background: `${c.color}18`, border: `1px solid ${c.color}44`, color: c.color }}>{c.branch}</span>
+              </div>
+              <div style={{ fontSize: 13.5, color: T.bright, fontWeight: 600, lineHeight: 1.45 }}>{c.msg}</div>
+              <div style={{ fontSize: 11, color: T.dim, marginTop: 3 }}>
+                {c.date} <span style={{ color: T.faint }}>·</span> {c.loc} <span style={{ color: T.faint }}>·</span> <span style={{ color: T.faint }}>{c.scope}</span>
+              </div>
+            </div>
+
+            {open === c.hash && (
+              <div style={{ marginTop: 10, background: "#0B0F16", border: `1px solid ${T.line}`, borderRadius: 6, padding: "12px 14px" }}>
+                {c.diff.map((d, j) => (
+                  <div key={j} style={{ display: "flex", gap: 10, fontSize: 11.5, lineHeight: 1.7, padding: "3px 0" }}>
+                    <span style={{ color: d.k === "+" ? T.green : T.yellow, flexShrink: 0, width: 10 }}>{d.k}</span>
+                    <span style={{ color: d.k === "+" ? "#A8C896" : "#CBB88A" }}>{d.s}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ───────────── tab: pom.xml ───────────── */
+function PomTab() {
+  return (
+    <div style={{ padding: "28px 30px 44px", maxWidth: 780 }}>
+      <div style={{ color: T.dim, fontSize: 11, marginBottom: 16 }}>skills, declared the way a java dev would actually declare them</div>
+      <CodeBlock code={POM} lang="xml" maxH={9999} />
+    </div>
+  );
+}
+
+/* ───────────── tab: contact.sh ───────────── */
+function ContactTab() {
+  const [ran, setRan] = useState(false);
+  const [copied, setCopied] = useState("");
+  const copy = (label, val) => {
+    navigator.clipboard?.writeText(val);
+    setCopied(label);
+    setTimeout(() => setCopied(""), 2000);
+  };
+
+  return (
+    <div style={{ padding: "28px 30px 44px", maxWidth: 720 }}>
+      <div style={{ color: T.dim, fontSize: 11, marginBottom: 16 }}>chmod +x contact.sh — then hit run</div>
+      <CodeBlock code={CONTACT_SH} lang="bash" maxH={9999} />
+
+      <button onClick={() => setRan(true)} style={{
+        marginTop: 16, padding: "10px 22px", background: ran ? T.raise : T.green,
+        color: ran ? T.green : "#0A0E14", border: `1px solid ${T.green}`,
+        borderRadius: 6, fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+      }}>
+        {ran ? "✓ executed" : "▶ ./contact.sh"}
+      </button>
+
+      {ran && (
+        <div style={{ marginTop: 16, background: "#0B0F16", border: `1px solid ${T.line}`, borderRadius: 6, padding: "14px 16px" }}>
+          <div style={{ fontSize: 11, color: T.dim, marginBottom: 10 }}>establishing connection... <span style={{ color: T.green }}>ok</span></div>
+          {[
+            ["email",    "coundersahil02@gmail.com",          null],
+            ["phone",    "+91 98346 80110",                   null],
+            ["github",   "github.com/sahilcounder",            "https://github.com/sahilcounder"],
+            ["linkedin", "linkedin.com/in/sahil-counder",     "https://linkedin.com/in/sahil-counder"],
+            ["location", "Nagpur, Maharashtra · UTC+5:30",    null],
+          ].map(([k, v, href]) => (
+            <div
+              key={k}
+              onClick={() => href ? window.open(href, "_blank") : copy(k, v)}
+              style={{ display: "flex", gap: 12, alignItems: "baseline", padding: "6px 0", cursor: "pointer", borderBottom: `1px solid ${T.line}44` }}
+            >
+              <span style={{ fontSize: 10.5, color: T.faint, width: 64, flexShrink: 0 }}>{k}</span>
+              <span style={{ fontSize: 12.5, color: copied === k ? T.green : T.bright }}>
+                {copied === k ? "copied to clipboard ✓" : v}
+              </span>
+              <span style={{ fontSize: 9.5, color: T.faint, marginLeft: "auto" }}>
+                {copied === k ? "" : href ? "open ↗" : "click to copy"}
+              </span>
+            </div>
+          ))}
+          <div style={{ marginTop: 12, fontSize: 11, color: T.dim }}>
+            exit code <span style={{ color: T.green }}>0</span> — open to Java / full-stack roles, on-site or remote
+          </div>
+          <div style={{ marginTop: 14 }}>
+            <button
+              onClick={downloadResume}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                padding: "8px 16px",
+                background: T.raise,
+                border: `1px solid ${T.line}`,
+                borderRadius: 5,
+                color: T.dim,
+                fontSize: 11,
+                fontFamily: "inherit",
+                cursor: "pointer",
+                transition: "all .15s",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = T.green; e.currentTarget.style.color = T.green; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = T.line; e.currentTarget.style.color = T.dim; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Sahil_Counder_Resume.docx
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────────── main app ───────────── */
+const TABS = [
+  { id: "readme", label: "readme.md", dot: T.blue },
+  { id: "projects", label: "projects/", dot: T.orange },
+  { id: "career", label: "career.log", dot: T.green },
+  { id: "pom", label: "pom.xml", dot: T.purple },
+  { id: "contact", label: "contact.sh", dot: T.cyan },
+];
+
+function App() {
+  const [booted, setBooted] = useState(false);
+  const [tab, setTab] = useState("readme");
+  const [clock, setClock] = useState("");
+
+  useEffect(() => {
+    const tick = () => setClock(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false }));
+    tick();
+    const t = setInterval(tick, 30000);
+    return () => clearInterval(t);
+  }, []);
+
+  const openTab = useCallback((id) => {
+    setTab(id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  if (!booted) return <Boot onDone={() => setBooted(true)} />;
+
+  return (
+    <div style={{ minHeight: "100vh", background: T.bg, color: T.fg, fontFamily: "'JetBrains Mono', monospace", display: "flex", flexDirection: "column" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+        ::selection{background:${T.orange}33}
+        ::-webkit-scrollbar{width:8px;height:8px}
+        ::-webkit-scrollbar-track{background:${T.bg}}
+        ::-webkit-scrollbar-thumb{background:${T.line};border-radius:4px}
+        ::-webkit-scrollbar-thumb:hover{background:${T.faint}}
+        button{transition:all .15s}
+        a{text-decoration:none}
+      `}</style>
+
+      {/* ── window chrome ── */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: T.panel, borderBottom: `1px solid ${T.line}` }}>
+        <div style={{ display: "flex", gap: 7 }}>
+          <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#FF5F57" }} />
+          <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#FEBC2E" }} />
+          <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#28C840" }} />
+        </div>
+        <div style={{ flex: 1, textAlign: "center", fontSize: 11, color: T.dim }}>
+          sahil@dev — ~/portfolio — -zsh
+        </div>
+        <div style={{ fontSize: 10, color: T.faint }}>{clock} IST</div>
+      </div>
+
+      {/* ── editor tabs ── */}
+      <div style={{ display: "flex", background: T.panel, borderBottom: `1px solid ${T.line}`, overflowX: "auto" }}>
+        {TABS.map((t) => (
+          <button key={t.id} onClick={() => openTab(t.id)} style={{
+            display: "flex", alignItems: "center", gap: 8, padding: "10px 18px",
+            background: tab === t.id ? T.bg : "transparent",
+            border: "none", borderRight: `1px solid ${T.line}`,
+            borderTop: `2px solid ${tab === t.id ? t.dot : "transparent"}`,
+            color: tab === t.id ? T.bright : T.dim,
+            fontSize: 11.5, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap",
+          }}>
+            <span style={{ width: 7, height: 7, borderRadius: 2, background: t.dot, opacity: tab === t.id ? 1 : 0.4 }} />
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ── content ── */}
+      <div style={{ flex: 1 }}>
+        {tab === "readme" && <ReadmeTab openTab={openTab} />}
+        {tab === "projects" && <ProjectsTab />}
+        {tab === "career" && <CareerTab />}
+        {tab === "pom" && <PomTab />}
+        {tab === "contact" && <ContactTab />}
+      </div>
+
+      {/* ── terminal ── */}
+      <Terminal openTab={openTab} />
+
+      {/* ── status bar ── */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "6px 14px", background: T.panel, borderTop: `1px solid ${T.line}`, fontSize: 10, color: T.dim, flexWrap: "wrap" }}>
+        <span style={{ color: T.green }}>⎇ main</span>
+        <span>✓ build passing</span>
+        <span style={{ color: T.orange }}>Java 21</span>
+        <span>Spring Boot 3.2</span>
+        <span style={{ marginLeft: "auto" }}>UTF-8</span>
+        <span>Nagpur, IN</span>
+        <a
+          href="https://github.com/sahilcounder" target="_blank" rel="noopener noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: 5, color: T.dim, textDecoration: "none", transition: "color .15s" }}
+          onMouseEnter={e => e.currentTarget.style.color = T.bright}
+          onMouseLeave={e => e.currentTarget.style.color = T.dim}
+        >
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          sahilcounder
+        </a>
+        <span style={{ color: T.green }}>● open to work</span>
+      </div>
+    </div>
+  );
+}
+
+
+    /* mount the app */
+    const _container = document.getElementById('root');
+    const _root = ReactDOM.createRoot(_container);
+    _root.render(React.createElement(App));
+  </script>
+</body>
+</html>
